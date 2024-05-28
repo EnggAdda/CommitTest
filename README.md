@@ -61,4 +61,69 @@ public class YourController {
         return encryptionService.decrypt(encryptedData);
     }
 }
+........................................................................................
+
+
+
+
+
+// Assume you have already loaded private key from a file or generated it programmatically
+
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.RSAEncrypter;
+import com.nimbusds.jose.util.Base64;
+
+@RestController
+public class EncryptionController {
+
+    @PostMapping("/encrypt")
+    public ResponseEntity<String> encryptData(@RequestBody String data) throws Exception {
+        // Load or generate private key
+        PrivateKey privateKey = loadPrivateKey();
+
+        // Create JWE header
+        JWEHeader header = new JWEHeader.Builder(JWEAlgorithm.RSA_OAEP_256, EncryptionMethod.A128GCM)
+            .contentType("text/plain")
+            .build();
+
+        // Create JWE object with payload
+        JWEObject jweObject = new JWEObject(header, new Payload(data));
+
+        // Create encrypter with the public key
+        RSAEncrypter encrypter = new RSAEncrypter(privateKey);
+
+        // Encrypt the payload
+        jweObject.encrypt(encrypter);
+
+        // Serialize to compact form
+        String encryptedData = jweObject.serialize();
+
+        return ResponseEntity.ok(encryptedData);
+    }
+
+    private PrivateKey loadPrivateKey() {
+        // Load private key from a file or generate it programmatically
+        // Return the private key
+    }
+}
+................................................................
+
+import { JWE, JWK } from 'jose';
+
+async function decryptData(encryptedData) {
+    // Fetch public key from server or use a stored public key
+    const publicKeyResponse = await fetch('/publicKey');
+    const publicKey = await publicKeyResponse.json();
+
+    // Parse JWK (JSON Web Key) from public key
+    const jwk = JWK.asKey(publicKey);
+
+    // Parse JWE (JSON Web Encryption) from encrypted data
+    const jwe = JWE.decrypt(encryptedData, jwk);
+
+    // Access decrypted payload
+    const decryptedData = jwe.payload.toString();
+
+    return decryptedData;
+}
 
