@@ -1,6 +1,12 @@
 # CommitTest
  test commit
 
+ <dependency>
+    <groupId>com.nimbusds</groupId>
+    <artifactId>nimbus-jose-jwt</artifactId>
+    <version>9.10</version> <!-- or the latest version available -->
+</dependency>
+
 
  import org.springframework.stereotype.Service;
 import javax.crypto.Cipher;
@@ -126,11 +132,7 @@ async function decryptData(encryptedData) {
 
     return decryptedData;
 }
-////44<dependency>
-    <groupId>com.nimbusds</groupId>
-    <artifactId>nimbus-jose-jwt</artifactId>
-    <version>9.10</version> <!-- or the latest version available -->
-</dependency>
+////44
 
 
 /////
