@@ -1,11 +1,36 @@
 # CommitTest
  test commit
+..............
+import java.security.*;
 
- <dependency>
-    <groupId>com.nimbusds</groupId>
-    <artifactId>nimbus-jose-jwt</artifactId>
-    <version>9.10</version> <!-- or the latest version available -->
-</dependency>
+public class RSAKeyGenerator {
+
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        // Generate an RSA key pair with a key size of 2048 bits
+        KeyPair keyPair = generateRSAKeyPair(2048);
+
+        // Get the private and public keys
+        PrivateKey privateKey = keyPair.getPrivate();
+        PublicKey publicKey = keyPair.getPublic();
+
+        // Print the keys (just for demonstration purposes)
+        System.out.println("Private Key: " + privateKey);
+        System.out.println("Public Key: " + publicKey);
+    }
+
+    public static KeyPair generateRSAKeyPair(int keySize) throws NoSuchAlgorithmException {
+        // Initialize the key pair generator
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+
+        // Initialize the key size
+        keyPairGenerator.initialize(keySize);
+
+        // Generate the key pair
+        return keyPairGenerator.generateKeyPair();
+    }
+}
+................
+
 
 
  import org.springframework.stereotype.Service;
